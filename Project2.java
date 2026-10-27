@@ -45,16 +45,16 @@ public class Project2 {
                                 "Enter selection:");
 
             selection = Integer.parseInt(input.nextLine().trim());
-            System.out.println(selection);
+
             switch (selection) {
                 case 1:
-                    System.out.println("printRelations()");
+                    printRelations();
                     break;
                 case 2:
-                    System.out.println("changeRelation()");
+                    changeRelation();
                     break;
                 case 3:
-                    System.out.println("detectDeadlock()");
+                    detectDeadlock();
                     break;
                 case 4:
                     System.out.println("Goodbye.");
@@ -64,5 +64,34 @@ public class Project2 {
                     break;
             }
         }
+    }
+
+    public static void printRelations() {
+        int m = process[0].getResourceLength();
+
+        for (int j = 0; j < m; j++) {
+            System.out.print("\tr" + j);
+        }
+
+        System.out.println(NL);
+
+        for (int i = 0; i < process.length; i++) {
+            System.out.println("p" + i);
+            for (int j = 0; j < m; j++) {
+                System.out.print("\t");
+                if (process[i].getResource(j) != 0) {
+                    System.out.print(process[i].getResource(j));
+                }
+            }
+        }
+    }
+    public static void changeRelation() {
+        
+    }
+    public static void detectDeadlock() {
+        
+    }
+    public static void detectDeadlockRecursively() {
+        
     }
 }
