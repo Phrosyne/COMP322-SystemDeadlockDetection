@@ -43,9 +43,26 @@ public class Project2 {
                                 "3) Detect the system for deadlock\r\n" + //
                                 "4) Quit the program\r\n" + //
                                 "Enter selection:");
-            selection = input.nextInt();
+
+            selection = Integer.parseInt(input.nextLine().trim());
             System.out.println(selection);
+            switch (selection) {
+                case 1:
+                    System.out.println("printRelations()");
+                    break;
+                case 2:
+                    System.out.println("changeRelation()");
+                    break;
+                case 3:
+                    System.out.println("detectDeadlock()");
+                    break;
+                case 4:
+                    System.out.println("Goodbye.");
+                    break;
+                default:
+                    System.out.println("Invalid option, try again.");
+                    break;
+            }
         }
-        System.exit(0);
     }
 }
