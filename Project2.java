@@ -76,17 +76,61 @@ public class Project2 {
         System.out.println(NL);
 
         for (int i = 0; i < process.length; i++) {
-            System.out.println("p" + i);
+            System.out.print("p" + i);
             for (int j = 0; j < m; j++) {
                 System.out.print("\t");
                 if (process[i].getResource(j) != 0) {
                     System.out.print(process[i].getResource(j));
                 }
             }
+            System.out.println();
         }
     }
     public static void changeRelation() {
+        System.out.println("Enter the process index:");
+        int pIndex = -1;
+        try {
+            pIndex = Integer.parseInt(input.nextLine().trim());            
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input.");
+            return;
+        }
+
+        if (pIndex < 0 || pIndex >= process.length) {
+            System.out.println("Invalid process index.");
+            return;
+        }
         
+        System.out.println("Enter the resource index:");
+        int rIndex = -1;
+        
+        try {
+            rIndex = Integer.parseInt(input.nextLine().trim());
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input.");
+            return;
+        }
+
+        if (rIndex < 0 || rIndex >= process[pIndex].getResourceLength()) {
+            System.out.println("Invalid resource index.");
+            return;
+        }
+
+        System.out.println("Enter the new relation (0: None, 1: P requests R, 2: P allocated R):");
+        int newRelation = -1;
+        try {
+            newRelation = Integer.parseInt(input.nextLine().trim());
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input.");
+            return;
+        }
+
+        if (newRelation < 0 || newRelation > 2) {
+            System.out.println("Invalid relation.");
+            return;
+        }
+
+        process[pIndex].setResource(rIndex, newRelation);
     }
     public static void detectDeadlock() {
         
