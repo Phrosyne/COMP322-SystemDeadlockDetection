@@ -28,6 +28,7 @@ public class Project2 {
             }
         } catch (NumberFormatException e) {
             System.out.println("Invalid input.");
+            return;
         }
 
         process = new Relation[n];
@@ -47,7 +48,7 @@ public class Project2 {
             try {
                 selection = Integer.parseInt(input.nextLine().trim());            
             } catch (NumberFormatException e) {
-                System.out.println("Invalid option, try again.");
+                selection = -1;
             }
 
             switch (selection) {
@@ -64,6 +65,7 @@ public class Project2 {
                     System.out.println("Goodbye.");
                     break;
                 default:
+                    System.out.println("Invalid option, try again.");
                     break;
             }
         }
@@ -139,12 +141,12 @@ public class Project2 {
 
         if (newRelation == 0) {
             process[pIndex].setResource(rIndex, 0);
-            System.out.println("There is now no relation between process " + pIndex + "and resource " + rIndex);
+            System.out.println("There is now no relation between process " + pIndex + "and resource " + rIndex + ".");
         }
 
         if (newRelation == 1) {
             process[pIndex].setResource(rIndex, newRelation);
-            System.out.println("Process " + pIndex + " is now requesting to use resource " + rIndex);
+            System.out.println("Process " + pIndex + " is now requesting to use resource " + rIndex + ".");
         }
 
         if (newRelation == 2) {
@@ -152,6 +154,7 @@ public class Project2 {
                 if (i != pIndex && process[i].getResource(rIndex) == 2) {
                     System.out.println("Process " + pIndex + " cannot be allocated resource " + rIndex
                             + " because process " + i + " is using it.");
+                    return;
                 }
             }
             process[pIndex].setResource(rIndex, 2);
