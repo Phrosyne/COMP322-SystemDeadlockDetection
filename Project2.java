@@ -39,10 +39,10 @@ public class Project2 {
         int selection = -1;
         while (selection != 4) {
             System.out.println(NL + "1) Print the process-to-resource relations\r\n" + //
-                                "2) Change a process-to-resource relation\r\n" + //
-                                "3) Detect the system for deadlock\r\n" + //
-                                "4) Quit the program\r\n" + //
-                                "Enter selection:");
+                    "2) Change a process-to-resource relation\r\n" + //
+                    "3) Detect the system for deadlock\r\n" + //
+                    "4) Quit the program\r\n" + //
+                    "Enter selection:");
 
             selection = Integer.parseInt(input.nextLine().trim());
 
@@ -86,11 +86,14 @@ public class Project2 {
             System.out.println();
         }
     }
+
     public static void changeRelation() {
+        int n = process.length;
+
         System.out.println("Enter the process index:");
         int pIndex = -1;
         try {
-            pIndex = Integer.parseInt(input.nextLine().trim());            
+            pIndex = Integer.parseInt(input.nextLine().trim());
         } catch (NumberFormatException e) {
             System.out.println("Invalid input.");
             return;
@@ -100,10 +103,10 @@ public class Project2 {
             System.out.println("Invalid process index.");
             return;
         }
-        
+
         System.out.println("Enter the resource index:");
         int rIndex = -1;
-        
+
         try {
             rIndex = Integer.parseInt(input.nextLine().trim());
         } catch (NumberFormatException e) {
@@ -111,13 +114,14 @@ public class Project2 {
             return;
         }
 
-        if (rIndex < 0 || rIndex >= process[pIndex].getResourceLength()) {
+        if (rIndex < 0 || rIndex >= process[0].getResourceLength()) {
             System.out.println("Invalid resource index.");
             return;
         }
 
         System.out.println("Enter the new relation (0: None, 1: P requests R, 2: P allocated R):");
         int newRelation = -1;
+
         try {
             newRelation = Integer.parseInt(input.nextLine().trim());
         } catch (NumberFormatException e) {
@@ -126,16 +130,38 @@ public class Project2 {
         }
 
         if (newRelation < 0 || newRelation > 2) {
-            System.out.println("Invalid relation.");
+            System.out.println("Invalid relation value.");
             return;
         }
 
-        process[pIndex].setResource(rIndex, newRelation);
+        if (newRelation == 0) {
+            process[pIndex].setResource(rIndex, 0);
+            System.out.println("There is now no relation between process " + pIndex + "and resource " + rIndex);
+        }
+
+        if (newRelation == 1) {
+            process[pIndex].setResource(rIndex, newRelation);
+            System.out.println("Process " + pIndex + " is now requesting to use resource " + rIndex);
+        }
+
+        if (newRelation == 2) {
+            for (int i = 0; i < n; i++) {
+                if (i != pIndex && process[i].getResource(rIndex) == 2) {
+                    System.out.println("Process " + pIndex + " cannot be allocated resource " + rIndex + " because process " + i + " is using it.");
+                }
+            }
+            process[pIndex].setResource(rIndex, 2);
+            System.out.println("Process " + pIndex + " has been allocated resource "
+                    + rIndex + " for usage.");
+        }
+
     }
+
     public static void detectDeadlock() {
-        
+
     }
+
     public static void detectDeadlockRecursively() {
-        
+
     }
 }
