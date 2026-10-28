@@ -44,7 +44,11 @@ public class Project2 {
                     "4) Quit the program\r\n" + //
                     "Enter selection:");
 
-            selection = Integer.parseInt(input.nextLine().trim());
+            try {
+                selection = Integer.parseInt(input.nextLine().trim());            
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid option, try again.");
+            }
 
             switch (selection) {
                 case 1:
@@ -60,7 +64,6 @@ public class Project2 {
                     System.out.println("Goodbye.");
                     break;
                 default:
-                    System.out.println("Invalid option, try again.");
                     break;
             }
         }
@@ -73,7 +76,7 @@ public class Project2 {
             System.out.print("\tr" + j);
         }
 
-        System.out.println(NL);
+        System.out.println();
 
         for (int i = 0; i < process.length; i++) {
             System.out.print("p" + i);
@@ -147,7 +150,8 @@ public class Project2 {
         if (newRelation == 2) {
             for (int i = 0; i < n; i++) {
                 if (i != pIndex && process[i].getResource(rIndex) == 2) {
-                    System.out.println("Process " + pIndex + " cannot be allocated resource " + rIndex + " because process " + i + " is using it.");
+                    System.out.println("Process " + pIndex + " cannot be allocated resource " + rIndex
+                            + " because process " + i + " is using it.");
                 }
             }
             process[pIndex].setResource(rIndex, 2);
@@ -158,10 +162,54 @@ public class Project2 {
     }
 
     public static void detectDeadlock() {
+        int n = process.length;
+        int m = process[0].getResourceLength();
 
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (process[i].getResource(j) == 2) {
+                    for (int k = 0; k < n; k++) {
+                        if (process[k].getResource(j) == 1) {
+                            if (detectDeadlockRecursively(i, k)) {
+                                System.out.println("Base:");
+                                System.out.println("Process " + k + " is requesting resource " + j + ".");
+                                System.out.println("Process " + i + " is allocated resource " + j + ".");
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        System.out.println("The system is not deadlocked, and is currently safe.");
     }
 
-    public static void detectDeadlockRecursively() {
+    public static boolean detectDeadlockRecursively(int target, int current) {
+        int n = process.length;
+        int m = process[0].getResourceLength();
 
+        for (int j = 0; j < m; j++) {
+            if (process[current].getResource(j) == 2) {
+                for (int k = 0; k < n; k++) {
+                    if (process[k].getResource(j) == 1) {
+                        if (k == target) {
+                            System.out.println("The system is deadlocked due to the following relations:");
+                            System.out.println("Process " + k + " is requesting resource " + j + ".");
+                            System.out.println("Process " + current + " is allocated resource " + j + ".");
+                            return true;
+                        }
+                        
+                        if (detectDeadlockRecursively(target, k)) {
+                            System.out.println("Backtrack:");
+                            System.out.println("Process " + k + " is requesting resource " + j + ".");
+                            System.out.println("Process " + current + " is allocated resource " + j + ".");
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
     }
 }
